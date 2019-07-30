@@ -2,24 +2,38 @@ import React from 'react'
 import './finishedQuiz.css'
 
 const FinishedQuiz = props => {
+
+    const done = Object.values(props.results).filter((item) => {
+        return item === 'success'
+    });
+
     return (
         <div className='finishedQuiz'>
             <ul>
-                <li>
-                    <strong>1. </strong>
-                    How are you?
-                    <i className={'fa fa-times failure'} />
-                </li>
-                <li>
-                    <strong>2. </strong>
-                    How are you?
-                    <i className={'fa fa-check success'} />
-                </li>
+                { props.quiz.map((quizItem, index) => {
+                    const cls = [
+                        'fa',
+                        props.results[quizItem.id] === 'failure' ? 'fa-times' : 'fa-check',
+                        props.results[quizItem.id]
+                    ];
+                    return (
+                        <li key={index}>
+                            <strong>{index + 1}</strong>.&nbsp;
+                            {quizItem.question}
+                            <i className={cls.join(' ')} />
+                        </li>
+                    )
+
+                }) }
+
             </ul>
-            <p>Правильно 4 из 10</p>
+            <p>Правильно {done.length} из {props.quiz.length}</p>
 
             <div>
-                <button className='btn btn-primary'>Повторить</button>
+                <button
+                    className='btn btn-primary'
+                    onClick={props.onRetry}
+                >Повторить</button>
             </div>
         </div>
     )
