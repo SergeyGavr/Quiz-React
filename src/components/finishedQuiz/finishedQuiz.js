@@ -34,6 +34,10 @@ const FinishedQuiz = props => {
                     className='btn btn-primary'
                     onClick={props.onRetry}
                 >Повторить</button>
+                <button
+                    className='btn btn-success'
+                    onClick={props.onRetry}
+                >Перейти в список тестов</button>
             </div>
         </div>
     )

@@ -24,3 +24,7 @@
 .failure {
     color: #ff5843;
 }
+
+.btn {
+    margin-right: 10px;
+}
