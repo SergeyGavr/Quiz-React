@@ -18,11 +18,12 @@
 }
 
 .success {
-    color: #0c540b;
+    color: #24ff1e;
+    
 }
 
 .failure {
-    color: #ff5843;
+    color: #7a0400;
 }
 
 .btn {
