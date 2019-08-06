@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { createControl } from '../../form/formFramework'
+import { createControl, validate, validateForm } from '../../form/formFramework'
 import Input from '../../components/UI/input/input'
 import Select from '../../components/UI/select/select'
 
@@ -18,6 +18,7 @@ export default class QuizCreator extends Component {
     state = {
         rightAnswerId: 1,
         quiz: [],
+        isFormValid: false,
         formControls: {
             question: createControl({
                 label: 'Введите вопрос',
@@ -34,8 +35,8 @@ export default class QuizCreator extends Component {
         e.preventDefault()
     };
 
-    addQuestionHandler = () => {
-
+    addQuestionHandler = e => {
+        e.preventDefault()
     };
 
     createQuizHandler = () => {
@@ -43,6 +44,19 @@ export default class QuizCreator extends Component {
     };
 
     changeHandler = (value, controlName) => {
+        const formControls = {...this.state.formControls};
+        const control = {...formControls[controlName]};
+
+        control.touched = true;
+        control.value = value;
+        control.valid = validate(control.value, control.validation);
+
+        formControls[controlName] = control;
+
+        this.setState({
+            formControls,
+            isFormValid: validateForm(formControls)
+        })
 
     };
 
@@ -100,11 +114,13 @@ export default class QuizCreator extends Component {
                         <button
                             className='btn btn-primary'
                             onClick={this.addQuestionHandler}
+                            disabled={!this.state.isFormValid}
                         >Добавить вопрос</button>
 
                         <button
                             className='btn btn-success'
                             onClick={this.createQuizHandler}
+                            disabled={this.state.quiz.length === 0}
                         >Создать тест</button>
                     </form>
                 </div>
