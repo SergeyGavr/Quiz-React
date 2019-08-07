@@ -1,13 +1,15 @@
 import React, {Component} from 'react'
 import {NavLink} from 'react-router-dom'
 import axios from 'axios'
+import Spinner from '../../components/UI/spinner/spinner'
 
 import './quizList.css'
 
 export default class QuizList extends Component {
 
     state = {
-        quizes: []
+        quizes: [],
+        loading: true
     };
 
     renderQuizes() {
@@ -35,7 +37,8 @@ export default class QuizList extends Component {
             });
 
             this.setState({
-                quizes
+                quizes,
+                loading: false
             })
         } catch (e) {
             console.log(e)
@@ -48,10 +51,15 @@ export default class QuizList extends Component {
             <div className='quizList'>
                 <div>
                     <h1>Список тестов</h1>
+                    {
+                        this.state.loading
+                            ? <Spinner/>
+                            : <ul>
+                                {this.renderQuizes()}
+                              </ul>
 
-                    <ul>
-                        {this.renderQuizes()}
-                    </ul>
+                    }
+
                 </div>
 
             </div>
