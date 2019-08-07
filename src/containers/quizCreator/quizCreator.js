@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { createControl, validate, validateForm } from '../../form/formFramework'
 import Input from '../../components/UI/input/input'
 import Select from '../../components/UI/select/select'
+import axios from 'axios'
 
 import './quizCreator.css'
 
@@ -74,11 +75,31 @@ export default class QuizCreator extends Component {
         })
     };
 
-    createQuizHandler = e => {
+    createQuizHandler = async e => {
         e.preventDefault();
-        console.log(this.state.quiz)
 
-        // TODO: Server
+        try {
+            await axios.post('https://react-quiz-wfm.firebaseio.com/quizes.json', this.state.quiz);
+
+            this.setState({
+                quiz: [],
+                isFormValid: false,
+                rightAnswerId: 1,
+                formControls: {
+                    question: createControl({
+                        label: 'Введите вопрос',
+                        errorMessage: 'Вопрос не может быть пустым'
+                    }, {required: true}),
+                    option1: createOptionControl(1),
+                    option2: createOptionControl(2),
+                    option3: createOptionControl(3),
+                    option4: createOptionControl(4)
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
     };
 
     changeHandler = (value, controlName) => {
